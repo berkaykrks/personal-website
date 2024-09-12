@@ -87,13 +87,13 @@ form.addEventListener("submit",(e) => {
 document.getElementById('downloadCv').addEventListener('click', function(event) {
     event.preventDefault(); 
     if (confirm('CV dosyasını indirmek ister misiniz?')) {
-        window.location.href = 'cv.pdf'; 
+        window.location.href = 'ataBerkayKarakusCV.pdf'; 
     }
 });
 
 document.getElementById('downloadCv2').addEventListener('click', function(event) {
     event.preventDefault(); 
     if (confirm('CV dosyasını indirmek ister misiniz?')) {
-        window.location.href = 'cv.pdf'; 
+        window.location.href = 'ataBerkayKarakusCV.pdf'; 
     }
 });
