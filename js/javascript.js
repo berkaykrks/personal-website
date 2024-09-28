@@ -25,9 +25,7 @@ window.onscroll = () => {
             });
 
             sec.classList.add('show-animate');
-        } else {
-            sec.classList.remove('show-animate');
-        }
+        } 
     });
 
     //sticky header
