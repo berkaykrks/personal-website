@@ -479,9 +479,6 @@ span{
     transform:translateY(0);
 }
 
-
-
-
 .portfolio-layer h4{
     font-size: 3rem;
 }
@@ -897,6 +894,17 @@ section:nth-child(odd) .animate.scroll,
     .portfolio-box {
         margin-bottom: 2.5rem;
     }
+    .portfolio-layer h4 {
+        font-size: 2rem; /* Slightly larger for Laptop L */
+    }
+
+    .portfolio-layer p {
+        font-size: 1.2rem;
+    }
+
+    .portfolio-layer a {
+        font-size: 1.4rem;
+    }
 }
 
 /* Standard Laptop screens (between 1200px and 1440px) */
@@ -909,6 +917,18 @@ section:nth-child(odd) .animate.scroll,
 
     .portfolio-box {
         margin-bottom: 2rem;
+    }
+
+    .portfolio-layer h4 {
+        font-size: 2rem; /* Keep the base size for standard laptops */
+    }
+
+    .portfolio-layer p {
+        font-size: 1.4rem;
+    }
+
+    .portfolio-layer a {
+        font-size: 1.5rem;
     }
 }
 
@@ -923,6 +943,19 @@ section:nth-child(odd) .animate.scroll,
     .portfolio-box {
         margin-bottom: 2rem;
     }
+
+    .portfolio-layer h4 {
+        font-size: 1.8rem; /* Slightly smaller for tablets */
+    }
+
+    .portfolio-layer p {
+        font-size: 1.3rem;
+    }
+
+    .portfolio-layer a {
+        font-size: 1.4rem;
+    }
+
 }
 
 /* Mobile screens (below 768px) */
@@ -935,5 +968,17 @@ section:nth-child(odd) .animate.scroll,
 
     .portfolio-box {
         margin-bottom: 1.5rem; /* Tighter margin for mobile devices */
+    }
+
+    .portfolio-layer h4 {
+        font-size: 2.2rem; /* Smaller font size for mobile devices */
+    }
+
+    .portfolio-layer p {
+        font-size: 1.2rem;
+    }
+
+    .portfolio-layer a {
+        font-size: 1.3rem;
     }
 }
