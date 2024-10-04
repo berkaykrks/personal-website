@@ -871,3 +871,69 @@ section:nth-child(odd) .animate.scroll,
         width: 0;
     }
 }
+
+
+/* 4K screens and above */
+@media (min-width: 2560px) {
+    .portfolio-container {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns for 4K displays */
+        gap: 3rem;
+        padding: 3rem;
+    }
+
+    .portfolio-box {
+        margin-bottom: 3rem; /* Increased margin for 4K displays */
+    }
+}
+
+/* Laptop L screens (between 1440px and 2560px) */
+@media (min-width: 1440px) and (max-width: 2559px) {
+    .portfolio-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 columns for Laptop L */
+        gap: 2.5rem;
+        padding: 2.5rem;
+    }
+
+    .portfolio-box {
+        margin-bottom: 2.5rem;
+    }
+}
+
+/* Standard Laptop screens (between 1200px and 1440px) */
+@media (min-width: 1200px) and (max-width: 1439px) {
+    .portfolio-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for standard laptops */
+        gap: 2rem;
+        padding: 2rem;
+    }
+
+    .portfolio-box {
+        margin-bottom: 2rem;
+    }
+}
+
+/* Tablet screens (between 768px and 1200px) */
+@media (max-width: 1199px) {
+    .portfolio-container {
+        grid-template-columns: repeat(2, 1fr); /* 2 columns for standard laptops */
+        gap: 1.5rem;
+        padding: 1.5rem;
+    }
+
+    .portfolio-box {
+        margin-bottom: 2rem;
+    }
+}
+
+/* Mobile screens (below 768px) */
+@media (max-width: 767px) {
+    .portfolio-container {
+        grid-template-columns: 1fr; /* 1 column for Mobile */
+        gap: 1rem;
+        padding: 1rem;
+    }
+
+    .portfolio-box {
+        margin-bottom: 1.5rem; /* Tighter margin for mobile devices */
+    }
+}
