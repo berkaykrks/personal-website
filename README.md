@@ -5,6 +5,9 @@ Welcome to my personal portfolio website repository! This site is built to showc
 ## 🖥️ Live Website
 Check out my portfolio live at [berkaykrks.netlify.app](https://berkaykrks.netlify.app/).
 
+## DEMO
+![project-photo](/images/github.png)
+
 ## 🚀 About This Project
 
 This website is a personal portfolio where I share my development projects and provide a space for others to get to know more about my skills and experiences. The site is fully responsive and built using:
