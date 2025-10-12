@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Berkay - İlgi Alanlarım</title>
+
+    <link rel="stylesheet" href="css/style.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+</head>
+
+<body>
+    <header class="header sticky">
+        <a href="index.html" class="logo">Berkay.<span class="animate" style="--i:1;"></span></a>
+
+        <div class="bx bx-menu" id="menu-icon"><span class="animate" style="--i:2;"></span></div>
+        <nav class="navbar">
+            <a href="index.html#home">Home</a>
+            <a href="index.html#about">About</a>
+            <a href="index.html#education">Education</a>
+            <a href="interests.html" class="active">Interests</a> <a href="index.html#portfolio">Portfolio</a>
+            <a href="index.html#contact">Contact</a>
+
+            <span class="active-nav"></span>
+            <span class="animate" style="--i:2;"></span>
+        </nav>
+    </header>
+
+    <section class="interests-page show-animate" id="interests-page">
+        <h2 class="heading">Okuduklarım & <span>İzlediklerim</span></h2>
+        <div class="filter-buttons">
+            <button class="filter-btn active" data-filter="all" onclick="filterItems('all')">Hepsi</button>
+            <button class="filter-btn" data-filter="movie" onclick="filterItems('movie')">Filmler</button>
+            <button class="filter-btn" data-filter="series" onclick="filterItems('series')">Diziler</button>
+            <button class="filter-btn" data-filter="book" onclick="filterItems('book')">Kitaplar</button>
+        </div>
+
+        <div class="category-section" id="book-section">
+            <h3 class="category-title">Kitaplık: Okuduklarım</h3>
+            <div class="items-grid" data-category="book">
+            </div>
+        </div>
+
+        <div class="category-section" id="media-section">
+            <h3 class="category-title">Sinema & TV: İzlediklerim</h3>
+            <div class="items-grid" data-category="media">
+            </div>
+        </div>
+
+    </section>
+
+    <script src="js/data.js"></script>
+    <script>
+        // ----------------------------------------------------
+        // KART OLUŞTURMA VE YÜKLEME FONKSİYONU
+        // ----------------------------------------------------
+        function createCardHTML(item) {
+            // Tek bir kart için HTML yapısını oluşturur (geri döndürür)
+            return `
+            <div class="interest-card" data-category="${item.category}" id="item-${item.id}">
+                <img src="${item.image}" alt="${item.title}">
+                <div class="card-content">
+                    <h4>${item.title}</h4>
+                    <p class="author">${item.author}</p>
+                    <span class="tag ${item.tagClass}">${item.status}</span>
+                    <div class="rating">
+                        <i class='bx bxs-star'></i> ${item.rating}
+                    </div>
+                </div>
+            </div>
+        `;
+        }
+
+        function loadInterests() {
+            // Verileri kategorilere göre ayır
+            const bookGrid = document.querySelector('.items-grid[data-category="book"]');
+            const mediaGrid = document.querySelector('.items-grid[data-category="media"]');
+
+            myInterests.forEach(item => {
+                const cardHTML = createCardHTML(item);
+
+                if (item.category === 'book') {
+                    bookGrid.innerHTML += cardHTML;
+                } else if (item.category === 'series' || item.category === 'movie') {
+                    mediaGrid.innerHTML += cardHTML;
+                }
+                // NOT: Sitenizdeki book dışındaki tüm item'ler Sinema & TV'de toplanacaktır.
+            });
+
+            // İlk yüklemede animasyonu tetikle (eski çözümümüz)
+            activateScrollAnimations();
+
+            // İlk yüklemede filtrelemeyi ayarla
+            filterItems('all');
+        }
+
+        // ----------------------------------------------------
+        // FİLTRELEME FONKSİYONU (Önceki Hali, Sadece Çağrıları Değişecek)
+        // ----------------------------------------------------
+        function filterItems(filterValue) {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const interestCards = document.querySelectorAll('.interest-card');
+            const categorySections = document.querySelectorAll('.category-section');
+
+            // ... (Bu fonksiyonun içeriği önceki en son çalışan haliyle aynı kalacak) ...
+            // ... (Buton aktif etme ve display: '' mantığı) ...
+
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`.filter-btn[data-filter="${filterValue}"]`).classList.add('active');
+
+            interestCards.forEach(card => {
+                const category = card.getAttribute('data-category');
+                if (filterValue === 'all' || category === filterValue) {
+                    card.style.display = '';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            categorySections.forEach(section => {
+                const visibleCardsCount = section.querySelectorAll('.interest-card:not([style*="display: none"])').length;
+                if (filterValue !== 'all' && visibleCardsCount === 0) {
+                    section.style.display = 'none';
+                } else {
+                    section.style.display = 'block';
+                }
+            });
+        }
+
+        // Sayfa yüklendiğinde loadInterests fonksiyonunu çağır
+        window.addEventListener('load', loadInterests);
+
+        // (Animasyonu manuel tetikleyen eski activateScrollAnimations fonksiyonunun tanımı burada olmalıdır, 
+        // eğer onu ayrı bir js dosyasına taşımadıysanız.)
+    </script>
+    <script src="js/javascript.js"></script>
+
+</body>
+
+</html>
