@@ -42,44 +42,7 @@ window.onscroll = () => {
     footer.classList.toggle('show-animate', this.innerHeight + this.scrollY >= document.scrollingElement.scrollHeight);
 }
 
-//Email Settings
 
-const form = document.querySelector("form");
-const fullName = document.getElementById("name");
-const email = document.getElementById("email");
-const phone = document.getElementById("phone");
-const subject = document.getElementById("subject");
-const message = document.getElementById("message");
-
-
-function sendEmail() {
-    const bodyMessage = `Full Name: ${fullName.value}<br> Email: ${email.value}
-    <br> Phone Number: ${phone.value}<br> Message: ${message.value}`;
-
-    Email.send({
-        SecureToken: "c63f35e8-b886-4a3c-9c62-27e0a38b1b5f",
-        To: 'karakusataberkay@gmail.com',
-        From: "karakusataberkay@gmail.com",
-        Subject: subject.value,
-        Body: bodyMessage
-    }).then(
-        message => {
-            if (message == "OK") {
-                Swal.fire({
-                    title: "Mailiniz Başarıyla Yollandı!",
-                    text: "En kısa zamanda dönüş yapacağım!",
-                    icon: "success"
-                });
-            }
-        }
-    );
-};
-
-form.addEventListener("submit", (e) => {
-    e.preventDefault();
-
-    sendEmail();
-});
 
 
 document.getElementById('downloadCv').addEventListener('click', function (event) {
