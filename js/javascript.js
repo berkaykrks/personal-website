@@ -48,10 +48,10 @@ window.onscroll = () => {
         menuIcon.classList.remove('bx-x');
         navbar.classList.remove('active');
     }
-    
+
     // footer animasyonu (index.html için)
     let footer = document.querySelector('footer');
-    if(footer) {
+    if (footer) {
         footer.classList.toggle('show-animate', window.innerHeight + window.scrollY >= document.scrollingElement.scrollHeight);
     }
 }
@@ -62,7 +62,7 @@ if (downloadCvBtn) { // downloadCv elementi varsa
     downloadCvBtn.addEventListener('click', function (event) {
         event.preventDefault();
         // NOT: confirm yerine özel UI kullanmanız önerilir, ancak mevcut kodunuzu koruyoruz
-        if (confirm('CV dosyasını indirmek ister misiniz?')) { 
+        if (confirm('CV dosyasını indirmek ister misiniz?')) {
             window.location.href = 'ataBerkayKarakusCV.pdf';
         }
     });
@@ -73,7 +73,7 @@ if (downloadCv2Btn) { // downloadCv2 elementi varsa
     downloadCv2Btn.addEventListener('click', function (event) {
         event.preventDefault();
         // NOT: confirm yerine özel UI kullanmanız önerilir
-        if (confirm('CV dosyasını indirmek ister misiniz?')) { 
+        if (confirm('CV dosyasını indirmek ister misiniz?')) {
             window.location.href = 'ataBerkayKarakusCV.pdf';
         }
     });
@@ -84,12 +84,12 @@ if (downloadCv2Btn) { // downloadCv2 elementi varsa
 // ====================================================================
 
 // Lütfen kendi Last.fm kullanıcı adınızı buraya yazın
-const LASTFM_USERNAME = 'myrolith'; 
+const LASTFM_USERNAME = 'myrolith';
 
 function fetchLastFmTrack() {
     // Netlify Fonksiyonu'nu çağırın. Bu, API anahtarınızı güvenle gizler.
-    const FUNCTION_URL = '/.netlify/functions/lastfm'; 
-    
+    const FUNCTION_URL = '/.netlify/functions/lastfm';
+
     // index.html ve interests.html'deki her iki hedefi de seçiyoruz
     const targets = [
         document.getElementById('now-listening'),    // index.html için
@@ -111,9 +111,9 @@ function fetchLastFmTrack() {
         })
         .then(data => {
             const tracks = data.recenttracks.track;
-            
+
             // Eğer tracks bir dizi değilse veya boşsa
-            if (!Array.isArray(tracks) || tracks.length === 0) { 
+            if (!Array.isArray(tracks) || tracks.length === 0) {
                 const message = "Şu anda dinlemiyor.";
                 targets.forEach(el => el.innerHTML = message);
                 return;
@@ -121,25 +121,26 @@ function fetchLastFmTrack() {
 
             const track = tracks[0];
             const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
-            
-            // Güvenli veri çekimi
+
             const artistName = track.artist['#text'];
             const songName = track.name;
             const largeImage = track.image.find(img => img.size === 'large');
-            const albumArt = largeImage ? largeImage['#text'] : 'images/default_album.png'; 
+            const albumArt = largeImage ? largeImage['#text'] : 'images/default_album.png';
             const statusText = isNowPlaying ? "Şu an Dinliyor" : "Son Dinlenen";
 
+
+            // YENİ VE GÜZEL TASARIMA UYGUN HTML YAPISI
             const songHTML = `
-                <div class="song-info">
-                    <img src="${albumArt}" alt="${songName} Albüm Kapağı">
-                    <div>
-                        <p style="font-size: 1.4rem; margin-bottom: 5px; color: var(--main-color);">${statusText}</p>
-                        <p class="song-title">${songName}</p>
-                        <p style="opacity: 0.7;">${artistName}</p>
-                    </div>
-                </div>
-            `;
-            
+    <div class="song-info">
+        <img src="${albumArt}" alt="${songName} Albüm Kapağı">
+        <div class="song-details">
+            <span class="song-status">${statusText}</span>
+            <span class="song-title">${songName}</span>
+            <span class="song-artist">${artistName}</span>
+        </div>
+    </div>
+`;
+
             // Tüm hedefleri güncelleyin
             targets.forEach(el => el.innerHTML = songHTML);
 
@@ -154,17 +155,17 @@ function fetchLastFmTrack() {
 // =======================================================
 // BAŞLATMA (Hem index.html hem de interests.html için)
 // =======================================================
-document.addEventListener('DOMContentLoaded', () => { 
+document.addEventListener('DOMContentLoaded', () => {
     // Hem index.html hem de interests.html'de bulunan bir element varsa başlat
-    const isInterestsFeatureActive = document.getElementById('now-listening') !== null || 
-                                     document.getElementById('spotify-activity') !== null;
-    
+    const isInterestsFeatureActive = document.getElementById('now-listening') !== null ||
+        document.getElementById('spotify-activity') !== null;
+
     if (isInterestsFeatureActive) {
-        
+
         // İlk çağrıyı yap
-        fetchLastFmTrack(); 
-        
+        fetchLastFmTrack();
+
         // Otomatik güncellemeyi başlat
-        setInterval(fetchLastFmTrack, 15000); 
+        setInterval(fetchLastFmTrack, 15000);
     }
 });
