@@ -28,7 +28,7 @@ window.onscroll = () => {
             // navbar links
             navLinks.forEach(links => {
                 links.classList.remove('active');
-                // document.querySelector'ın null dönme ihtimaline karşı kontrol ekliyoruz
+                // index.html'deki bölümlerin aktifliğini ayarlar
                 const targetLink = document.querySelector('header nav a[href*=' + id + ']');
                 if (targetLink) {
                     targetLink.classList.add('active');
@@ -65,7 +65,7 @@ if (downloadCvBtn) { // downloadCv elementi varsa
     downloadCvBtn.addEventListener('click', function (event) {
         event.preventDefault();
         if (confirm('CV dosyasını indirmek ister misiniz?')) {
-            window.location.href = 'AtaBerkayKarakusCV.pdf';
+            window.location.href = 'ataBerkayKarakusCV.pdf';
         }
     });
 }
@@ -75,7 +75,7 @@ if (downloadCv2Btn) { // downloadCv2 elementi varsa
     downloadCv2Btn.addEventListener('click', function (event) {
         event.preventDefault();
         if (confirm('CV dosyasını indirmek ister misiniz?')) {
-            window.location.href = 'AtaBerkayKarakusCV.pdf';
+            window.location.href = 'ataBerkayKarakusCV.pdf';
         }
     });
 }
@@ -88,6 +88,7 @@ if (downloadCv2Btn) { // downloadCv2 elementi varsa
 const LASTFM_USERNAME = 'myrolith'; 
 
 function fetchLastFmTrack() {
+    // Netlify Fonksiyonu'nu çağırın. Bu, API anahtarınızı güvenle gizler.
     const FUNCTION_URL = '/.netlify/functions/lastfm'; 
     const activityDiv = document.getElementById('spotify-activity');
 
@@ -96,39 +97,48 @@ function fetchLastFmTrack() {
     fetch(FUNCTION_URL)
         .then(response => {
             if (!response.ok) {
-                // Hata durumunda Netlify Function'ın durumunu konsola yazdır
-                throw new Error(`Netlify Function hatası: ${response.status}`);
+                // Eğer status 404, 500 vb. ise hata fırlat
+                throw new Error(`Netlify Function hatası: ${response.status} - Lütfen Netlify loglarını kontrol edin.`);
             }
             return response.json();
         })
         .then(data => {
+            // Veri yapısının doğru geldiğini varsayarak ilerliyoruz
             const tracks = data.recenttracks.track;
             
-            if (!tracks || tracks.length === 0 || !tracks[0]) {
-                activityDiv.innerHTML = "Şu anda dinlemiyor.";
+            // Eğer tracks bir dizi değilse veya boşsa
+            if (!Array.isArray(tracks) || tracks.length === 0) { 
+                activityDiv.innerHTML = "Şu anda dinlemiyor veya veri formatı yanlış.";
                 return;
             }
 
             const track = tracks[0];
+            // Anlık dinleniyor mu kontrolü
             const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
             
-            const albumArt = track.image.find(img => img.size === 'large')['#text'] || 'images/default_album.png'; 
+            // Güvenli veri çekimi
+            const artistName = track.artist['#text'];
+            const songName = track.name;
+            const largeImage = track.image.find(img => img.size === 'large');
+
+            // Eğer large imaj yoksa default bir resim kullan
+            const albumArt = largeImage ? largeImage['#text'] : 'images/default_album.png'; 
             const statusText = isNowPlaying ? "Şu an Dinliyor" : "Son Dinlenen";
 
             activityDiv.innerHTML = `
                 <div class="song-info">
-                    <img src="${albumArt}" alt="${track.name} Albüm Kapağı">
+                    <img src="${albumArt}" alt="${songName} Albüm Kapağı">
                     <div>
                         <p style="font-size: 1.4rem; margin-bottom: 5px; color: var(--main-color);">${statusText}</p>
-                        <p class="song-title">${track.name}</p>
-                        <p style="opacity: 0.7;">${track.artist['#text']}</p>
+                        <p class="song-title">${songName}</p>
+                        <p style="opacity: 0.7;">${artistName}</p>
                     </div>
                 </div>
             `;
         })
         .catch(error => {
-            console.error("Veri çekilemedi:", error);
-            activityDiv.innerHTML = "Veri çekilirken hata oluştu. Netlify ayarlarını ve fonksiyonunuzu kontrol edin.";
+            console.error("Veri çekilemedi veya işlenirken hata oluştu:", error);
+            activityDiv.innerHTML = `Hata: ${error.message}. Konsolu kontrol edin.`;
         });
 }
 
