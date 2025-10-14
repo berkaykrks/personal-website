@@ -1,5 +1,5 @@
 // ====================================================================
-// 1. ANASAYFA FONKSİYONLARI (Toggle, Scroll, CV)
+// 1. ANASAYFA FONKSİYONLARI (Toggle, Scroll)
 // ====================================================================
 
 // Toggle Icon
@@ -48,20 +48,22 @@ window.onscroll = () => {
         menuIcon.classList.remove('bx-x');
         navbar.classList.remove('active');
     }
-
+    
     // footer animasyonu (index.html için)
     let footer = document.querySelector('footer');
-    if (footer) {
+    if(footer) {
         footer.classList.toggle('show-animate', window.innerHeight + window.scrollY >= document.scrollingElement.scrollHeight);
     }
 }
 
-// CV İndirme Butonları (YALNIZCA Varsa Çalıştır)
+// ====================================================================
+// 2. CV İndirme Butonları (YALNIZCA Varsa Çalıştır)
+// ====================================================================
+
 const downloadCvBtn = document.getElementById('downloadCv');
 if (downloadCvBtn) { // downloadCv elementi varsa
     downloadCvBtn.addEventListener('click', function (event) {
         event.preventDefault();
-        // NOT: confirm yerine özel UI kullanmanız önerilir, ancak mevcut kodunuzu koruyoruz
         if (confirm('CV dosyasını indirmek ister misiniz?')) {
             window.location.href = 'ataBerkayKarakusCV.pdf';
         }
@@ -72,7 +74,6 @@ const downloadCv2Btn = document.getElementById('downloadCv2');
 if (downloadCv2Btn) { // downloadCv2 elementi varsa
     downloadCv2Btn.addEventListener('click', function (event) {
         event.preventDefault();
-        // NOT: confirm yerine özel UI kullanmanız önerilir
         if (confirm('CV dosyasını indirmek ister misiniz?')) {
             window.location.href = 'ataBerkayKarakusCV.pdf';
         }
@@ -80,92 +81,81 @@ if (downloadCv2Btn) { // downloadCv2 elementi varsa
 }
 
 // ====================================================================
-// 2. LAST.FM ENTEGRASYONU (index.html ve interests.html için)
+// 3. LAST.FM ENTEGRASYONU (interests.html için)
 // ====================================================================
 
 // Lütfen kendi Last.fm kullanıcı adınızı buraya yazın
-const LASTFM_USERNAME = 'myrolith';
+const LASTFM_USERNAME = 'myrolith'; 
 
 function fetchLastFmTrack() {
     // Netlify Fonksiyonu'nu çağırın. Bu, API anahtarınızı güvenle gizler.
-    const FUNCTION_URL = '/.netlify/functions/lastfm';
+    const FUNCTION_URL = '/.netlify/functions/lastfm'; 
+    const activityDiv = document.getElementById('spotify-activity');
 
-    // index.html ve interests.html'deki her iki hedefi de seçiyoruz
-    const targets = [
-        document.getElementById('now-listening'),    // index.html için
-        document.getElementById('spotify-activity') // interests.html için
-    ].filter(el => el !== null); // Yalnızca var olan elementleri al
-
-    if (targets.length === 0) return;
-
-    // Hedeflerin yükleniyor durumunu güncelle
-    targets.forEach(el => el.innerHTML = "Yükleniyor...");
+    if (!activityDiv) return;
 
     fetch(FUNCTION_URL)
         .then(response => {
             if (!response.ok) {
                 // Eğer status 404, 500 vb. ise hata fırlat
-                throw new Error(`Netlify Function hatası: ${response.status}`);
+                throw new Error(`Netlify Function hatası: ${response.status} - Lütfen Netlify loglarını kontrol edin.`);
             }
             return response.json();
         })
         .then(data => {
+            // Veri yapısının doğru geldiğini varsayarak ilerliyoruz
             const tracks = data.recenttracks.track;
-
+            
             // Eğer tracks bir dizi değilse veya boşsa
-            if (!Array.isArray(tracks) || tracks.length === 0) {
-                const message = "Şu anda dinlemiyor.";
-                targets.forEach(el => el.innerHTML = message);
+            if (!Array.isArray(tracks) || tracks.length === 0) { 
+                activityDiv.innerHTML = "Şu anda dinlemiyor veya veri formatı yanlış.";
                 return;
             }
 
             const track = tracks[0];
+            // Anlık dinleniyor mu kontrolü
             const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
-
+            
+            // Güvenli veri çekimi
             const artistName = track.artist['#text'];
             const songName = track.name;
             const largeImage = track.image.find(img => img.size === 'large');
-            const albumArt = largeImage ? largeImage['#text'] : 'images/default_album.png';
+
+            // Eğer large imaj yoksa default bir resim kullan
+            const albumArt = largeImage ? largeImage['#text'] : 'images/default_album.png'; 
             const statusText = isNowPlaying ? "Şu an Dinliyor" : "Son Dinlenen";
 
-
-            // YENİ VE GÜZEL TASARIMA UYGUN HTML YAPISI
-            const songHTML = `
-    <div class="song-info">
-        <img src="${albumArt}" alt="${songName} Albüm Kapağı">
-        <div class="song-details">
-            <span class="song-status">${statusText}</span>
-            <span class="song-title">${songName}</span>
-            <span class="song-artist">${artistName}</span>
-        </div>
-    </div>
-`;
-
-            // Tüm hedefleri güncelleyin
-            targets.forEach(el => el.innerHTML = songHTML);
-
+            activityDiv.innerHTML = `
+                <div class="song-info">
+                    <img src="${albumArt}" alt="${songName} Albüm Kapağı">
+                    <div>
+                        <p style="font-size: 1.4rem; margin-bottom: 5px; color: var(--main-color);">${statusText}</p>
+                        <p class="song-title">${songName}</p>
+                        <p style="opacity: 0.7;">${artistName}</p>
+                    </div>
+                </div>
+            `;
         })
         .catch(error => {
             console.error("Veri çekilemedi veya işlenirken hata oluştu:", error);
-            const errorMessage = `Hata: ${error.message}. Konsolu kontrol edin.`;
-            targets.forEach(el => el.innerHTML = errorMessage);
+            activityDiv.innerHTML = `Hata: ${error.message}. Konsolu kontrol edin.`;
         });
 }
 
-// =======================================================
-// BAŞLATMA (Hem index.html hem de interests.html için)
-// =======================================================
-document.addEventListener('DOMContentLoaded', () => {
-    // Hem index.html hem de interests.html'de bulunan bir element varsa başlat
-    const isInterestsFeatureActive = document.getElementById('now-listening') !== null ||
-        document.getElementById('spotify-activity') !== null;
-
-    if (isInterestsFeatureActive) {
-
-        // İlk çağrıyı yap
-        fetchLastFmTrack();
-
-        // Otomatik güncellemeyi başlat
-        setInterval(fetchLastFmTrack, 15000);
+// Last.fm aktivitesini interests.html sayfasında başlat ve otomatik güncelle
+document.addEventListener('DOMContentLoaded', () => { 
+    // Yalnızca 'spotify-activity' div'i varsa (yani sadece interests.html sayfasında) çalıştır.
+    const activityDiv = document.getElementById('spotify-activity');
+    
+    if (activityDiv) {
+        
+        // 1. Last.fm çağrısını başlat
+        fetchLastFmTrack(); 
+        
+        // 2. Otomatik güncellemeyi başlat
+        setInterval(fetchLastFmTrack, 15000); 
+        
+        // 3. (OPSİYONEL) Eğer filtreleme kodunuz hala bu dosyadaysa, burada çağırın:
+        // setupFilter(); 
     }
 });

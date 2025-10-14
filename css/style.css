@@ -89,7 +89,6 @@ section{
     opacity: 0.7;
     background-size: cover;
     background-position: center;
-    position: relative;
 }
 .home-content{
     max-width: 60rem;
@@ -1195,110 +1194,51 @@ section:nth-child(odd) .animate.scroll,
 
 
 /* Şarkı*/
-/* --- YENİ NOW PLAYING KART STİLİ (Ortak Kullanım) --- */
-
-/* Ana Kutu Kapsayıcısı (index.html: .now-listening-card / interests.html: .current-listening-box) */
-.now-listening-card,
+/* css/style.css dosyanıza ekleyin */
 .current-listening-box {
-    /* Konumlandırma: index.html için absolute, interests.html için relative olur */
-    position: absolute; 
-    top: 15rem; /* Header'ın altından başlar */
-    right: 9%; /* Sağdan boşluk */
-    margin: 0; /* Index sayfasında margin olmamalı */
-    width: 320px; 
-    
-    /* Görsel Stil */
-    background: var(--second-bg-color);
+    text-align: center;
+    margin: 4rem auto 5rem;
+    padding: 2rem;
+    max-width: 600px;
+    background: var(--bg-color);
     border: 2px solid var(--main-color);
     border-radius: 1rem;
-    padding: 1.2rem;
-    z-index: 99;
-    
-    /* Etkileşim ve Gölge */
-    box-shadow: 0 0 10px rgba(0, 171, 240, 0.2); 
-    transition: all 0.4s ease-in-out;
-    overflow: hidden;
+    box-shadow: 0 0 1.5rem var(--main-color);
 }
 
-/* interests.html Sayfasına Özel Düzeltmeler */
-.current-listening-box {
-    position: relative; /* interests.html'de akışa uyması için */
-    margin: 4rem auto 5rem;
-    width: 100%;
-    max-width: 600px;
-}
-
-/* Kartın Üzerine Gelme Efekti */
-.now-listening-card:hover,
-.current-listening-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 0 25px var(--main-color); /* Güçlü Neon Gölge */
-}
-
-/* YÜKLENİYOR DURUMU */
-.loading-state {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 1.6rem;
+.current-listening-box h4 {
+    font-size: 2.5rem;
     color: var(--main-color);
-    padding: 10px 0;
+    margin-bottom: 1.5rem;
 }
 
-/* ŞARKI BİLGİSİ STİLİ */
-.song-info {
-    display: flex;
-    align-items: center;
-    text-align: left;
-    gap: 15px;
+#spotify-activity {
+    font-size: 1.8rem;
+    color: var(--text-color);
 }
 
 .song-info img {
-    /* Albüm kapağı */
-    width: 70px;
-    height: 70px;
+    width: 60px;
+    height: 60px;
     object-fit: cover;
+    margin-right: 1rem;
     border-radius: 5px;
-    transition: transform 0.3s ease;
 }
 
-.song-details {
-    /* Sanatçı ve Başlık Metinleri */
-    line-height: 1.3;
+.song-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
 }
 
-.song-status {
-    font-size: 1.3rem;
-    font-weight: 500;
-    color: var(--main-color);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-bottom: 2px;
+.song-info p {
+    margin: 0;
+    line-height: 1.2;
 }
 
 .song-title {
-    font-weight: 700;
-    font-size: 1.8rem;
-    color: var(--text-color);
-    display: block;
+    font-weight: 600;
+    color: var(--main-color);
 }
 
-.song-artist {
-    font-size: 1.4rem;
-    color: rgba(237, 237, 237, 0.7);
-}
-
-/* --- MOBİL UYUM DÜZELTMELERİ --- */
-@media (max-width: 850px) {
-    .now-listening-card {
-        /* Home içeriği ile birlikte akması için konumlandırma */
-        position: relative; 
-        top: 0;
-        right: auto;
-        margin: 3rem auto 0; /* Ortaya ve içeriğin üstüne hizalama */
-        width: 90%; 
-        max-width: 350px;
-        order: 1; 
-        z-index: 50;
-    }
-}
