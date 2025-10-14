@@ -1190,3 +1190,54 @@ section:nth-child(odd) .animate.scroll,
 .interest-card.hidden {
     display: none;
 }
+
+
+
+/* Şarkı*/
+/* css/style.css dosyanıza ekleyin */
+.current-listening-box {
+    text-align: center;
+    margin: 4rem auto 5rem;
+    padding: 2rem;
+    max-width: 600px;
+    background: var(--bg-color);
+    border: 2px solid var(--main-color);
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem var(--main-color);
+}
+
+.current-listening-box h4 {
+    font-size: 2.5rem;
+    color: var(--main-color);
+    margin-bottom: 1.5rem;
+}
+
+#spotify-activity {
+    font-size: 1.8rem;
+    color: var(--text-color);
+}
+
+.song-info img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    margin-right: 1rem;
+    border-radius: 5px;
+}
+
+.song-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.song-info p {
+    margin: 0;
+    line-height: 1.2;
+}
+
+.song-title {
+    font-weight: 600;
+    color: var(--main-color);
+}

@@ -1,0 +1,8 @@
+[build]
+  functions = "netlify/functions"
+  command = "echo 'Netlify build complete'" # Basit bir komut
+
+[[headers]]
+  for = "/netlify/functions/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*" # Fonksiyonlara erişime izin ver

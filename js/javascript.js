@@ -91,3 +91,66 @@ function activateScrollAnimations() {
 // 1. Sayfa yüklendiğinde bir kez çalıştır
 window.addEventListener('load', activateScrollAnimations);
 
+
+// ====================================================================
+// 2. LAST.FM ENTEGRASYONU (interests.html için)
+// ====================================================================
+
+// Lütfen kendi Last.fm kullanıcı adınızı buraya yazın
+const LASTFM_USERNAME = 'myrolith'; 
+
+function fetchLastFmTrack() {
+    // Netlify Fonksiyonu'nu çağırın. Bu, API anahtarınızı güvenle gizler.
+    const FUNCTION_URL = '/.netlify/functions/lastfm'; 
+    const activityDiv = document.getElementById('spotify-activity');
+
+    if (!activityDiv) return;
+
+    fetch(FUNCTION_URL)
+        .then(response => {
+            // Başarılı olmayan yanıtları (404, 500) kontrol et
+            if (!response.ok) {
+                throw new Error(`Netlify Function hatası: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            const tracks = data.recenttracks.track;
+            
+            if (!tracks || tracks.length === 0 || !tracks[0]) {
+                activityDiv.innerHTML = "Şu anda dinlemiyor.";
+                return;
+            }
+
+            const track = tracks[0];
+            const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
+            
+            // Eğer Last.fm'de resim yoksa, boş bir resim URL'si kullan (Hata önleme)
+            const albumArt = track.image.find(img => img.size === 'large')['#text'] || 'images/default_album.png'; 
+            const statusText = isNowPlaying ? "Şu an Dinliyor" : "Son Dinlenen";
+
+            activityDiv.innerHTML = `
+                <div class="song-info">
+                    <img src="${albumArt}" alt="${track.name} Albüm Kapağı">
+                    <div>
+                        <p style="font-size: 1.4rem; margin-bottom: 5px; color: var(--main-color);">${statusText}</p>
+                        <p class="song-title">${track.name}</p>
+                        <p style="opacity: 0.7;">${track.artist['#text']}</p>
+                    </div>
+                </div>
+            `;
+        })
+        .catch(error => {
+            console.error("Veri çekilemedi:", error);
+            activityDiv.innerHTML = "Veri çekilirken hata oluştu. Ayarları kontrol edin.";
+        });
+}
+
+// Last.fm aktivitesini interests.html sayfasında başlat ve otomatik güncelle
+window.addEventListener('load', () => {
+    if (window.location.pathname.endsWith('interests.html')) {
+        fetchLastFmTrack();
+        // Her 15 saniyede bir güncellemeyi sağlar (dinamiklik)
+        setInterval(fetchLastFmTrack, 15000); 
+    }
+});

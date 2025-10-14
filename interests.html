@@ -36,6 +36,10 @@
             <button class="filter-btn" data-filter="series" onclick="filterItems('series')">Diziler</button>
             <button class="filter-btn" data-filter="book" onclick="filterItems('book')">Kitaplar</button>
         </div>
+        <div class="current-listening-box">
+            <h4>Şu An Dinleniyor:</h4>
+            <div id="spotify-activity">Yükleniyor...</div>
+        </div>
 
         <div class="category-section" id="book-section">
             <h3 class="category-title">Kitaplık: Okuduklarım</h3>
@@ -52,6 +56,7 @@
     </section>
 
     <script src="js/data.js"></script>
+    <script src="js/javascript.js"></script>
     <script>
         // ----------------------------------------------------
         // KART OLUŞTURMA VE YÜKLEME FONKSİYONU
