@@ -1,5 +1,5 @@
 // ====================================================================
-// 1. ANASAYFA FONKSİYONLARI (Toggle, Scroll)
+// 1. ANASAYFA FONKSİYONLARI (Toggle, Scroll, CV)
 // ====================================================================
 
 // Toggle Icon
@@ -56,15 +56,13 @@ window.onscroll = () => {
     }
 }
 
-// ====================================================================
-// 2. CV İndirme Butonları (YALNIZCA Varsa Çalıştır)
-// ====================================================================
-
+// CV İndirme Butonları (YALNIZCA Varsa Çalıştır)
 const downloadCvBtn = document.getElementById('downloadCv');
 if (downloadCvBtn) { // downloadCv elementi varsa
     downloadCvBtn.addEventListener('click', function (event) {
         event.preventDefault();
-        if (confirm('CV dosyasını indirmek ister misiniz?')) {
+        // NOT: confirm yerine özel UI kullanmanız önerilir, ancak mevcut kodunuzu koruyoruz
+        if (confirm('CV dosyasını indirmek ister misiniz?')) { 
             window.location.href = 'ataBerkayKarakusCV.pdf';
         }
     });
@@ -74,14 +72,15 @@ const downloadCv2Btn = document.getElementById('downloadCv2');
 if (downloadCv2Btn) { // downloadCv2 elementi varsa
     downloadCv2Btn.addEventListener('click', function (event) {
         event.preventDefault();
-        if (confirm('CV dosyasını indirmek ister misiniz?')) {
+        // NOT: confirm yerine özel UI kullanmanız önerilir
+        if (confirm('CV dosyasını indirmek ister misiniz?')) { 
             window.location.href = 'ataBerkayKarakusCV.pdf';
         }
     });
 }
 
 // ====================================================================
-// 3. LAST.FM ENTEGRASYONU (interests.html için)
+// 2. LAST.FM ENTEGRASYONU (index.html ve interests.html için)
 // ====================================================================
 
 // Lütfen kendi Last.fm kullanıcı adınızı buraya yazın
@@ -90,42 +89,47 @@ const LASTFM_USERNAME = 'myrolith';
 function fetchLastFmTrack() {
     // Netlify Fonksiyonu'nu çağırın. Bu, API anahtarınızı güvenle gizler.
     const FUNCTION_URL = '/.netlify/functions/lastfm'; 
-    const activityDiv = document.getElementById('spotify-activity');
+    
+    // index.html ve interests.html'deki her iki hedefi de seçiyoruz
+    const targets = [
+        document.getElementById('now-listening'),    // index.html için
+        document.getElementById('spotify-activity') // interests.html için
+    ].filter(el => el !== null); // Yalnızca var olan elementleri al
 
-    if (!activityDiv) return;
+    if (targets.length === 0) return;
+
+    // Hedeflerin yükleniyor durumunu güncelle
+    targets.forEach(el => el.innerHTML = "Yükleniyor...");
 
     fetch(FUNCTION_URL)
         .then(response => {
             if (!response.ok) {
                 // Eğer status 404, 500 vb. ise hata fırlat
-                throw new Error(`Netlify Function hatası: ${response.status} - Lütfen Netlify loglarını kontrol edin.`);
+                throw new Error(`Netlify Function hatası: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
-            // Veri yapısının doğru geldiğini varsayarak ilerliyoruz
             const tracks = data.recenttracks.track;
             
             // Eğer tracks bir dizi değilse veya boşsa
             if (!Array.isArray(tracks) || tracks.length === 0) { 
-                activityDiv.innerHTML = "Şu anda dinlemiyor veya veri formatı yanlış.";
+                const message = "Şu anda dinlemiyor.";
+                targets.forEach(el => el.innerHTML = message);
                 return;
             }
 
             const track = tracks[0];
-            // Anlık dinleniyor mu kontrolü
             const isNowPlaying = track['@attr'] && track['@attr'].nowplaying === 'true';
             
             // Güvenli veri çekimi
             const artistName = track.artist['#text'];
             const songName = track.name;
             const largeImage = track.image.find(img => img.size === 'large');
-
-            // Eğer large imaj yoksa default bir resim kullan
             const albumArt = largeImage ? largeImage['#text'] : 'images/default_album.png'; 
             const statusText = isNowPlaying ? "Şu an Dinliyor" : "Son Dinlenen";
 
-            activityDiv.innerHTML = `
+            const songHTML = `
                 <div class="song-info">
                     <img src="${albumArt}" alt="${songName} Albüm Kapağı">
                     <div>
@@ -135,27 +139,32 @@ function fetchLastFmTrack() {
                     </div>
                 </div>
             `;
+            
+            // Tüm hedefleri güncelleyin
+            targets.forEach(el => el.innerHTML = songHTML);
+
         })
         .catch(error => {
             console.error("Veri çekilemedi veya işlenirken hata oluştu:", error);
-            activityDiv.innerHTML = `Hata: ${error.message}. Konsolu kontrol edin.`;
+            const errorMessage = `Hata: ${error.message}. Konsolu kontrol edin.`;
+            targets.forEach(el => el.innerHTML = errorMessage);
         });
 }
 
-// Last.fm aktivitesini interests.html sayfasında başlat ve otomatik güncelle
+// =======================================================
+// BAŞLATMA (Hem index.html hem de interests.html için)
+// =======================================================
 document.addEventListener('DOMContentLoaded', () => { 
-    // Yalnızca 'spotify-activity' div'i varsa (yani sadece interests.html sayfasında) çalıştır.
-    const activityDiv = document.getElementById('spotify-activity');
+    // Hem index.html hem de interests.html'de bulunan bir element varsa başlat
+    const isInterestsFeatureActive = document.getElementById('now-listening') !== null || 
+                                     document.getElementById('spotify-activity') !== null;
     
-    if (activityDiv) {
+    if (isInterestsFeatureActive) {
         
-        // 1. Last.fm çağrısını başlat
+        // İlk çağrıyı yap
         fetchLastFmTrack(); 
         
-        // 2. Otomatik güncellemeyi başlat
+        // Otomatik güncellemeyi başlat
         setInterval(fetchLastFmTrack, 15000); 
-        
-        // 3. (OPSİYONEL) Eğer filtreleme kodunuz hala bu dosyadaysa, burada çağırın:
-        // setupFilter(); 
     }
 });

@@ -89,6 +89,7 @@ section{
     opacity: 0.7;
     background-size: cover;
     background-position: center;
+    position: relative;
 }
 .home-content{
     max-width: 60rem;
@@ -1240,4 +1241,65 @@ section:nth-child(odd) .animate.scroll,
 .song-title {
     font-weight: 600;
     color: var(--main-color);
+}
+
+.now-listening-home {
+    position: absolute;
+    top: 15rem; /* Header'ın altından başlar */
+    right: 9%; /* Sayfanın sağ kenarından içeriye 9% boşluk bırakır */
+    width: 300px; /* Genişlik ayarı */
+    padding: 1.5rem;
+    background: var(--second-bg-color); /* Koyu arkaplan */
+    border: 2px solid var(--main-color);
+    border-radius: 1rem;
+    box-shadow: 0 0 1.5rem rgba(0, 171, 240, 0.5); /* Neon mavi gölge */
+    z-index: 99; /* Diğer elementlerin üstünde görünmesi için */
+    text-align: center;
+    transition: 0.5s ease;
+}
+
+.now-listening-home h4 {
+    font-size: 1.8rem;
+    color: var(--main-color);
+    margin-bottom: 1rem;
+}
+
+#now-listening {
+    /* JavaScript'in içeriği buraya yazılacak */
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+
+/* Şarkı Bilgisi Kartının İç Stilleri (interests.html'deki ile aynı yapıyı kullanır) */
+.now-listening-home .song-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.now-listening-home .song-info img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.now-listening-home .song-info .song-title {
+    font-weight: 600;
+    color: var(--main-color);
+    font-size: 1.6rem;
+}
+
+/* Mobil Uyum (Küçük ekranlarda sağdan sola kayar ve küçülür) */
+@media (max-width: 850px) {
+    .now-listening-home {
+        position: relative; /* Home içeriği ile birlikte akması için */
+        top: 0;
+        right: auto;
+        margin: 2rem auto; /* Ortaya hizalama */
+        width: 90%; 
+        max-width: 400px;
+        order: 1; /* Home içeriğinin üstünde görünmesini sağlar */
+    }
 }
