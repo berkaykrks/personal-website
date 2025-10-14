@@ -1196,110 +1196,110 @@ section:nth-child(odd) .animate.scroll,
 
 /* Şarkı*/
 /* css/style.css dosyanıza ekleyin */
+/* --- YENİ NOW PLAYING KART STİLİ (Ortak Kullanım) --- */
+
+/* Ana Kutu Kapsayıcısı (index.html: .now-listening-card / interests.html: .current-listening-box) */
+.now-listening-card,
 .current-listening-box {
-    text-align: center;
-    margin: 4rem auto 5rem;
-    padding: 2rem;
-    max-width: 600px;
-    background: var(--bg-color);
+    /* Konumlandırma: index.html için absolute, interests.html için relative olur */
+    position: absolute; 
+    top: 15rem; /* Header'ın altından başlar */
+    right: 9%; /* Sağdan boşluk */
+    margin: 0; /* Index sayfasında margin olmamalı */
+    width: 320px; 
+    
+    /* Görsel Stil */
+    background: var(--second-bg-color);
     border: 2px solid var(--main-color);
     border-radius: 1rem;
-    box-shadow: 0 0 1.5rem var(--main-color);
+    padding: 1.2rem;
+    z-index: 99;
+    
+    /* Etkileşim ve Gölge */
+    box-shadow: 0 0 10px rgba(0, 171, 240, 0.2); 
+    transition: all 0.4s ease-in-out;
+    overflow: hidden;
 }
 
-.current-listening-box h4 {
-    font-size: 2.5rem;
+/* interests.html Sayfasına Özel Düzeltmeler */
+.current-listening-box {
+    position: relative; /* interests.html'de akışa uyması için */
+    margin: 4rem auto 5rem;
+    width: 100%;
+    max-width: 600px;
+}
+
+/* Kartın Üzerine Gelme Efekti */
+.now-listening-card:hover,
+.current-listening-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 25px var(--main-color); /* Güçlü Neon Gölge */
+}
+
+/* YÜKLENİYOR DURUMU */
+.loading-state {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.6rem;
     color: var(--main-color);
-    margin-bottom: 1.5rem;
+    padding: 10px 0;
 }
 
-#spotify-activity {
-    font-size: 1.8rem;
-    color: var(--text-color);
-}
-
-.song-info img {
-    width: 60px;
-    height: 60px;
-    object-fit: cover;
-    margin-right: 1rem;
-    border-radius: 5px;
-}
-
+/* ŞARKI BİLGİSİ STİLİ */
 .song-info {
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 10px;
+    text-align: left;
+    gap: 15px;
 }
 
-.song-info p {
-    margin: 0;
-    line-height: 1.2;
+.song-info img {
+    /* Albüm kapağı */
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 5px;
+    transition: transform 0.3s ease;
+}
+
+.song-details {
+    /* Sanatçı ve Başlık Metinleri */
+    line-height: 1.3;
+}
+
+.song-status {
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: var(--main-color);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
 }
 
 .song-title {
-    font-weight: 600;
-    color: var(--main-color);
-}
-
-.now-listening-home {
-    position: absolute;
-    top: 15rem; /* Header'ın altından başlar */
-    right: 9%; /* Sayfanın sağ kenarından içeriye 9% boşluk bırakır */
-    width: 300px; /* Genişlik ayarı */
-    padding: 1.5rem;
-    background: var(--second-bg-color); /* Koyu arkaplan */
-    border: 2px solid var(--main-color);
-    border-radius: 1rem;
-    box-shadow: 0 0 1.5rem rgba(0, 171, 240, 0.5); /* Neon mavi gölge */
-    z-index: 99; /* Diğer elementlerin üstünde görünmesi için */
-    text-align: center;
-    transition: 0.5s ease;
-}
-
-.now-listening-home h4 {
+    font-weight: 700;
     font-size: 1.8rem;
-    color: var(--main-color);
-    margin-bottom: 1rem;
-}
-
-#now-listening {
-    /* JavaScript'in içeriği buraya yazılacak */
-    font-size: 1.5rem;
     color: var(--text-color);
+    display: block;
 }
 
-/* Şarkı Bilgisi Kartının İç Stilleri (interests.html'deki ile aynı yapıyı kullanır) */
-.now-listening-home .song-info {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
+.song-artist {
+    font-size: 1.4rem;
+    color: rgba(237, 237, 237, 0.7);
 }
 
-.now-listening-home .song-info img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.now-listening-home .song-info .song-title {
-    font-weight: 600;
-    color: var(--main-color);
-    font-size: 1.6rem;
-}
-
-/* Mobil Uyum (Küçük ekranlarda sağdan sola kayar ve küçülür) */
+/* --- MOBİL UYUM DÜZELTMELERİ --- */
 @media (max-width: 850px) {
-    .now-listening-home {
-        position: relative; /* Home içeriği ile birlikte akması için */
+    .now-listening-card {
+        /* Home içeriği ile birlikte akması için konumlandırma */
+        position: relative; 
         top: 0;
         right: auto;
-        margin: 2rem auto; /* Ortaya hizalama */
+        margin: 3rem auto 0; /* Ortaya ve içeriğin üstüne hizalama */
         width: 90%; 
-        max-width: 400px;
-        order: 1; /* Home içeriğinin üstünde görünmesini sağlar */
+        max-width: 350px;
+        order: 1; 
+        z-index: 50;
     }
 }
