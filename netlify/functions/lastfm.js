@@ -18,7 +18,7 @@ exports.handler = async (event, context) => {
         };
     }
 
-    const API_URL = `https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=${LASTFM_USERNAME}&api_key=${API_KEY}&format=json&limit=1`;
+    const API_URL = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=" + LASTFM_USERNAME + "&api_key=" + API_KEY + "&format=json&limit=1"; 
 
     try {
         // Last.fm'e istek gönder (Bu istek güvenli sunucuda gerçekleşir)
