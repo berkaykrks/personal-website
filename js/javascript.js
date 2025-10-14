@@ -144,17 +144,18 @@ function fetchLastFmTrack() {
 
 // Last.fm aktivitesini interests.html sayfasında başlat ve otomatik güncelle
 document.addEventListener('DOMContentLoaded', () => { 
-    // Yalnızca interests.html sayfasındaysak devam et
-    if (window.location.pathname.endsWith('interests.html')) {
+    // Yalnızca 'spotify-activity' div'i varsa (yani sadece interests.html sayfasında) çalıştır.
+    const activityDiv = document.getElementById('spotify-activity');
+    
+    if (activityDiv) {
         
-        // Activity div'i kontrol et
-        const activityDiv = document.getElementById('spotify-activity');
+        // 1. Last.fm çağrısını başlat
+        fetchLastFmTrack(); 
         
-        if (activityDiv) {
-            // İlk çağrıyı yap
-            fetchLastFmTrack(); 
-            // Otomatik güncellemeyi başlat
-            setInterval(fetchLastFmTrack, 15000); 
-        }
+        // 2. Otomatik güncellemeyi başlat
+        setInterval(fetchLastFmTrack, 15000); 
+        
+        // 3. (OPSİYONEL) Eğer filtreleme kodunuz hala bu dosyadaysa, burada çağırın:
+        // setupFilter(); 
     }
 });
