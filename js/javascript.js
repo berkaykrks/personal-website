@@ -143,10 +143,18 @@ function fetchLastFmTrack() {
 }
 
 // Last.fm aktivitesini interests.html sayfasında başlat ve otomatik güncelle
-window.addEventListener('load', () => {
-    // Sadece interests.html ise Last.fm'i başlat
+document.addEventListener('DOMContentLoaded', () => { 
+    // Yalnızca interests.html sayfasındaysak devam et
     if (window.location.pathname.endsWith('interests.html')) {
-        fetchLastFmTrack();
-        setInterval(fetchLastFmTrack, 15000); 
+        
+        // Activity div'i kontrol et
+        const activityDiv = document.getElementById('spotify-activity');
+        
+        if (activityDiv) {
+            // İlk çağrıyı yap
+            fetchLastFmTrack(); 
+            // Otomatik güncellemeyi başlat
+            setInterval(fetchLastFmTrack, 15000); 
+        }
     }
 });
