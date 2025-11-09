@@ -38,7 +38,7 @@ const myInterests = [
     // --- FİLMLER ---
     {
         id: 4,
-        title: "Inception (Film)",
+        title: "Inception",
         author: "Yönetmen: C. Nolan",
         category: "movie",
         status: "İzlenildi",
@@ -48,20 +48,20 @@ const myInterests = [
     },
     {
         id: 5,
-        title: "Dune (Film)",
+        title: "Dune",
         author: "Yönetmen: D. Villeneuve",
         category: "movie",
-        status: "İzlenecek",
+        status: "İzlendi",
         rating: "Beklemede",
         image: "others/film2.jpg",
         tagClass: "completed"
     },
     {
         id: 6,
-        title: "Dune 2(Film)",
+        title: "Dune 2",
         author: "Yönetmen: D. Villeneuve",
         category: "movie",
-        status: "İzlenecek",
+        status: "İzlendi",
         rating: "Beklemede",
         image: "others/film3.jpg",
         tagClass: "completed"
@@ -81,7 +81,7 @@ const myInterests = [
         title: "Esaretin Bedeli",
         author: "Yönetmen: D. Villeneuve",
         category: "movie",
-        status: "İzlenecek",
+        status: "İzlendi",
         rating: "Beklemede",
         image: "others/film5.png",
         tagClass: "completed"
@@ -94,17 +94,17 @@ const myInterests = [
         status: "Okundu",
         rating: "yorumsuz",
         image: "others/book34.jpg",
-        tagClass: "watchlist"
+        tagClass: "completed"
     },
     {
         id: 10,
         title: "Dexter",
         author: "Yönetmen: D. Villeneuve",
         category: "series",
-        status: "İzlenecek",
+        status: "İzlendi",
         rating: "Beklemede",
         image: "others/dizi2.jpg",
-        tagClass: "watchlist"
+        tagClass: "completed"
     },
     //---- Book Category ---  
     {
@@ -358,5 +358,74 @@ const myInterests = [
         tagClass: "completed"
     },
 
-    // ... İstediğiniz kadar içerik ekleyebilirsiniz
+    {
+        id: 36,
+        title: "3 Body Problem",
+        author: "Yönetmen: D. Villeneuve",
+        category: "series",
+        status: "İzlenecek",
+        rating: "Beklemede",
+        image: "others/dizi3.jpg",
+        tagClass: "watchlist"
+    },
+    {
+        id: 37,
+        title: "The Boys",
+        author: "Yönetmen: D. Villeneuve",
+        category: "series",
+        status: "İzlendi",
+        rating: "4.5/5",
+        image: "others/dizi4.jpg",
+        tagClass: "completed"
+    },
+    {
+        id: 38,
+        title: "Silo",
+        author: "Yönetmen: D. Villeneuve",
+        category: "series",
+        status: "İzlendi",
+        rating: "4.1/5",
+        image: "others/dizi5.jpg",
+        tagClass: "completed"
+    },
+    {
+        id: 39,
+        title: "Stranger Things",
+        author: "Yönetmen: D. Villeneuve",
+        category: "series",
+        status: "İzlendi",
+        rating: "4.6/5",
+        image: "others/dizi6.jpg",
+        tagClass: "completed"
+    },
+    {
+        id: 40,
+        title: "Mr Robot",
+        author: "Yönetmen: D. Villeneuve",
+        category: "series",
+        status: "İzlendi",
+        rating: "4.5/5",
+        image: "others/dizi7.jpg",
+        tagClass: "completed"
+    },
+    {
+        id: 41,
+        title: "Dune Prophecy",
+        author: "Yönetmen: Johan Renck",
+        category: "series",
+        status: "İzlendi",
+        rating: "4.5/5",
+        image: "others/dizi8.jpg",
+        tagClass: "completed"
+    },
+    {
+        id: 42,
+        title: "Looper",
+        author: "Yönetmen: Johan Renck",
+        category: "movie",
+        status: "İzlendi",
+        rating: "4.5/5",
+        image: "others/film6.jpg",
+        tagClass: "completed"
+    },
 ];
